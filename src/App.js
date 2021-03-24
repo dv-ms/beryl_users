@@ -12,13 +12,13 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/">
+          <Route exact path={`${process.env.REACT_APP_HOME_PATH}`}>
             <Home />
           </Route>
-          <Route exact path="/users">
+          <Route exact path={`${process.env.REACT_APP_USERS_PATH}`}>
             <Users />
           </Route>
-          <Route exact path="/users/new">
+          <Route exact path={`${process.env.REACT_APP_NEW_USER_PATH}`}>
             <NewUser />
           </Route>
           {/* 
