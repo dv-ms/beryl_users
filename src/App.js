@@ -1,13 +1,11 @@
-import logo from "./logo.svg";
 import "./App.css";
 
-import { Button } from "react-bootstrap";
-
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Home from "./components/home";
 import NotFound from "./components/not_found";
 import Users from "./components/users";
+import NewUser from "./components/users/new";
 
 function App() {
   return (
@@ -20,10 +18,10 @@ function App() {
           <Route exact path="/users">
             <Users />
           </Route>
+          <Route exact path="/users/new">
+            <NewUser />
+          </Route>
           {/* 
-        <Route exact path="/users/new">
-          <NewUser />
-        </Route>
         <Route exact path="/users/new">
           <ShowUser />
         </Route>
