@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Alert, Spinner, Table, Image, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 export default class Users extends Component {
   constructor(props) {
@@ -9,6 +9,7 @@ export default class Users extends Component {
       loaded: false,
       error: null,
       users: [],
+      show_user_id: null,
     };
   }
   componentDidMount() {
@@ -50,6 +51,13 @@ export default class Users extends Component {
     } else if (this.state.error != null) {
       /* Error alert */
       return <Alert variant="danger">{this.state.error.message}</Alert>;
+    } else if (this.state.show_user_id) {
+      /* Show user */
+      return (
+        <Redirect
+          to={`${process.env.REACT_APP_USERS_PATH}/${this.state.show_user_id}`}
+        ></Redirect>
+      );
     } else {
       return (
         <>
@@ -78,7 +86,11 @@ export default class Users extends Component {
             </thead>
             <tbody>
               {this.state.users.map((user, index) => (
-                <tr key={index}>
+                <tr
+                  style={{ cursor: "pointer" }}
+                  key={index}
+                  onClick={(e) => this.setState({ show_user_id: user.id })}
+                >
                   <td>{user.id}</td>
                   <td>
                     <Image
