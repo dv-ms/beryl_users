@@ -58,7 +58,10 @@ export default class Users extends Component {
             <Link to={`${process.env.REACT_APP_HOME_PATH}`} className={"p-1"}>
               <Button variant="primary">Home</Button>
             </Link>
-            <Link to={`${process.env.REACT_APP_NEW_USER_PATH}`} className={"p-1"}>
+            <Link
+              to={`${process.env.REACT_APP_NEW_USER_PATH}`}
+              className={"p-1"}
+            >
               <Button variant="success">Create new User</Button>
             </Link>
           </div>
