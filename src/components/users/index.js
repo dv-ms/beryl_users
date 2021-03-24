@@ -13,6 +13,10 @@ export default class Users extends Component {
     };
   }
   componentDidMount() {
+    this.fetchUsers();
+  }
+
+  fetchUsers = () => {
     fetch(`${process.env.REACT_APP_USERS_LIST_URL}`)
       .then((response) => response.json())
       .then(
@@ -38,7 +42,36 @@ export default class Users extends Component {
           });
         }
       );
-  }
+  };
+
+  deleteUser = (user_id) => {
+    this.setState(
+      {
+        loaded: false,
+      },
+      () => {
+        this.deleteUserAPI(user_id);
+      }
+    );
+  };
+
+  deleteUserAPI = (user_id) => {
+    fetch(`${process.env.REACT_APP_USERS_LIST_URL}/${user_id}`, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then(
+        (success) => {
+          alert("Deleted user");
+          this.setState({ error: null, loaded: true });
+          this.fetchUsers();
+        },
+        (error) => {
+          this.setState({ error, loaded: true });
+        }
+      );
+  };
+
   render() {
     if (!this.state.loaded) {
       return (
@@ -82,7 +115,7 @@ export default class Users extends Component {
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-                <th></th>
+                <th colSpan={2}></th>
               </tr>
             </thead>
             <tbody>
@@ -110,6 +143,14 @@ export default class Users extends Component {
                     >
                       Edit
                     </Link>
+                  </td>
+                  <td>
+                    <span
+                      style={{ cursor: "progress" }}
+                      onClick={(e) => this.deleteUser(user.id)}
+                    >
+                      Delete
+                    </span>
                   </td>
                 </tr>
               ))}
