@@ -26,6 +26,7 @@ function App() {
           </Route>
 
           <Route
+            exact
             path={`${process.env.REACT_APP_USERS_PATH}/:userID`}
             render={(props) => <ShowUser {...props} />}
           />

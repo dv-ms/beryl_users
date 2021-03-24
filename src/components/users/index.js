@@ -82,6 +82,7 @@ export default class Users extends Component {
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -103,6 +104,13 @@ export default class Users extends Component {
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>
                   <td>{user.email}</td>
+                  <td>
+                    <Link
+                      to={`${process.env.REACT_APP_USERS_PATH}/${user.id}/edit`}
+                    >
+                      Edit
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
