@@ -12,24 +12,28 @@ export default class Users extends Component {
     };
   }
   componentDidMount() {
-    fetch("https://reqres.in/api/users")
+    fetch(`${process.env.REACT_APP_USERS_LIST_URL}`)
       .then((response) => response.json())
       .then(
         (response) => {
           if (response.data != null) {
-            console.log(response);
-            this.setState({ users: response.data, error: null, loaded: true });
+            this.setState({ loaded: true, error: null, users: response.data });
           } else {
             this.setState({
               loaded: true,
-              error: response.message || "Error fetching Users",
+              error: {
+                message:
+                  response.message == null
+                    ? `${process.env.REACT_APP_USERS_FETCH_ERROR}`
+                    : response.message,
+              },
             });
           }
         },
         (error) => {
           this.setState({
             loaded: true,
-            error: error.message,
+            error: { message: error.message },
           });
         }
       );
@@ -38,23 +42,27 @@ export default class Users extends Component {
     if (!this.state.loaded) {
       return (
         <>
+          {/* Loader */}
           <Spinner animation="border" role="status"></Spinner>
-          <p>Fetching ...</p>
+          <p className={"m-2"}>Fetching ...</p>
         </>
       );
     } else if (this.state.error != null) {
+      /* Error alert */
       return <Alert variant="danger">{this.state.error.message}</Alert>;
     } else {
       return (
         <>
-          <div style={{ padding: "20px" }}>
-            <Link to="/" style={{ padding: "10px" }}>
+          {/* Buttons */}
+          <div className={"p-3"}>
+            <Link to={`${process.env.REACT_APP_HOME_PATH}`} className={"p-1"}>
               <Button variant="primary">Home</Button>
             </Link>
-            <Link to="/users/new" style={{ padding: "10px" }}>
+            <Link to={`${process.env.REACT_APP_NEW_USER_PATH}`} className={"p-1"}>
               <Button variant="success">Create new User</Button>
             </Link>
           </div>
+          {/* Table */}
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -67,10 +75,15 @@ export default class Users extends Component {
             </thead>
             <tbody>
               {this.state.users.map((user, index) => (
-                <tr style={{ align: "center" }}>
-                  <td style={{ textAlign: "center" }}>{user.id}</td>
+                <tr key={index}>
+                  <td>{user.id}</td>
                   <td>
-                    <Image src={user.avatar} roundedCircle />
+                    <Image
+                      src={user.avatar}
+                      roundedCircle
+                      height={100}
+                      width={100}
+                    />
                   </td>
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>

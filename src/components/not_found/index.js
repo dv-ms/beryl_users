@@ -6,10 +6,10 @@ export default class NotFound extends Component {
   render() {
     return (
       <>
-        <Link to="/">
+        <Link to={`${process.env.REACT_APP_HOME_PATH}`}>
           <Button variant="primary">Go to Home</Button>
         </Link>
-        <div style={{ margin: "20px" }}>Not Found</div>
+        <div className={"m-3"}>Not Found</div>
       </>
     );
   }
