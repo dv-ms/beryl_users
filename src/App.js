@@ -16,15 +16,19 @@ function App() {
           <Route exact path={`${process.env.REACT_APP_HOME_PATH}`}>
             <Home />
           </Route>
+
           <Route exact path={`${process.env.REACT_APP_USERS_PATH}`}>
             <Users />
           </Route>
+
           <Route exact path={`${process.env.REACT_APP_NEW_USER_PATH}`}>
             <NewUser />
           </Route>
-          <Route exact path={`${process.env.REACT_APP_USERS_PATH}/:userID`}>
-            <ShowUser />
-          </Route>
+
+          <Route
+            path={`${process.env.REACT_APP_USERS_PATH}/:userID`}
+            render={(props) => <ShowUser {...props} />}
+          />
           {/* 
         <Route exact path="/users/:userID/edit">
           <EditUser />
