@@ -54,41 +54,7 @@ export default class NewUser extends Component {
           loaded: false,
         },
         () => {
-          fetch(`${process.env.REACT_APP_USERS_LIST_URL}`, {
-            method: "POST",
-            body: {
-              // using just names and job here because API only accepts name and job
-              name:
-                this.state.user.first_name + " " + this.state.user.last_name,
-              job: this.state.user.job,
-            },
-          })
-            .then((response) => response.json())
-            .then(
-              (success) => {
-                if (success.id != null) {
-                  // user is saved at back-end
-                  this.setState({
-                    loaded: true,
-                    error: null,
-                    user_created: true,
-                  });
-                } else {
-                  this.setState({
-                    loaded: true,
-                    error: {
-                      message: "Error creating user: " + success.message,
-                    },
-                  });
-                }
-              },
-              (error) => {
-                this.setState({
-                  loaded: true,
-                  error: { message: error.message },
-                });
-              }
-            );
+          this.createUserAPI();
         }
       );
     } else {
@@ -96,15 +62,55 @@ export default class NewUser extends Component {
       window.scrollTo(0, 0);
     }
   }
+  createUserAPI = () => {
+    fetch(`${process.env.REACT_APP_USERS_LIST_URL}`, {
+      method: "POST",
+      body: {
+        // using just names and job here because API only accepts name and job
+        name: this.state.user.first_name + " " + this.state.user.last_name,
+        job: this.state.user.job,
+      },
+    })
+      .then((response) => response.json())
+      .then(
+        (success) => {
+          if (success.id != null) {
+            // user is saved at back-end
+            alert("User created");
+            this.setState({
+              loaded: true,
+              error: null,
+              user_created: true,
+            });
+          } else {
+            this.setState({
+              loaded: true,
+              error: {
+                message: "Error creating user: " + success.message,
+              },
+            });
+          }
+        },
+        (error) => {
+          this.setState({
+            loaded: true,
+            error,
+          });
+        }
+      );
+  };
   render() {
     return (
       <>
+        {/* Redirect if user is created */}
         {this.state.user_created ? (
           <Redirect to={`${process.env.REACT_APP_USERS_PATH}`} />
         ) : null}
+        {/* Error alert */}
         {this.state.error ? (
           <Alert variant="danger">{this.state.error.message}</Alert>
         ) : null}
+        {/* Buttons */}
         <div className={"p-3"}>
           <Link to={`${process.env.REACT_APP_HOME_PATH}`} className={"p-2"}>
             <Button variant="primary">Home</Button>
@@ -113,6 +119,7 @@ export default class NewUser extends Component {
             <Button variant="success">USERS</Button>
           </Link>
         </div>
+        {/* Form */}
         <div
           style={{
             padding: "20px",
@@ -122,7 +129,7 @@ export default class NewUser extends Component {
           }}
         >
           <Form>
-            <Form.Group controlId="formBasicFirstName" className={"m-3"}>
+            <Form.Group controlId="userFormFirstName" className={"m-3"}>
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 required={true}
@@ -132,7 +139,7 @@ export default class NewUser extends Component {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicLastName" className={"m-3"}>
+            <Form.Group controlId="userFormLastName" className={"m-3"}>
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 required={true}
@@ -142,10 +149,10 @@ export default class NewUser extends Component {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicAvatar" className={"m-3"}>
+            <Form.Group controlId="userFormAvatar" className={"m-3"}>
               <Form.File
                 required={true}
-                id="formBasicAvatar"
+                id="userFormAvatar"
                 label="Avatar"
                 onChange={(e) => {
                   this.setUser("avatar", e.target.files[0]);
@@ -164,7 +171,7 @@ export default class NewUser extends Component {
               ) : null}
             </Form.Group>
 
-            <Form.Group controlId="formBasicEmail" className={"m-3"}>
+            <Form.Group controlId="userFormEmail" className={"m-3"}>
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 required={true}
@@ -174,7 +181,7 @@ export default class NewUser extends Component {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicJob" className={"m-3"}>
+            <Form.Group controlId="userFormJob" className={"m-3"}>
               <Form.Label>Job</Form.Label>
               <Form.Control
                 required={true}

@@ -49,9 +49,7 @@ export default class ShowUser extends Component {
         (error) => {
           this.setState({
             loaded: true,
-            error: {
-              message: error.message,
-            },
+            error,
           });
         }
       );
@@ -69,6 +67,7 @@ export default class ShowUser extends Component {
     } else {
       return (
         <>
+          {/* Error alert */}
           {this.state.error ? (
             <Alert variant="danger">{this.state.error.message}</Alert>
           ) : null}
@@ -89,22 +88,22 @@ export default class ShowUser extends Component {
             }}
           >
             <Form>
-              <Form.Group controlId="formBasicID" className={"m-3"}>
+              <Form.Group controlId="userFormID" className={"m-3"}>
                 <Form.Label>ID : </Form.Label>
                 <Form.Label> {this.state.user.id}</Form.Label>
               </Form.Group>
 
-              <Form.Group controlId="formBasicFirstName" className={"m-3"}>
+              <Form.Group controlId="userFormFirstName" className={"m-3"}>
                 <Form.Label>First Name : </Form.Label>
                 <Form.Label> {this.state.user.first_name}</Form.Label>
               </Form.Group>
 
-              <Form.Group controlId="formBasicLastName" className={"m-3"}>
+              <Form.Group controlId="userFormLastName" className={"m-3"}>
                 <Form.Label>Last Name : </Form.Label>
                 <Form.Label> {this.state.user.last_name}</Form.Label>
               </Form.Group>
 
-              <Form.Group controlId="formBasicAvatar" className={"m-3"}>
+              <Form.Group controlId="userFormAvatar" className={"m-3"}>
                 <Form.Label>Avatar : </Form.Label>
                 <Image
                   src={this.state.user.avatar}
@@ -114,7 +113,7 @@ export default class ShowUser extends Component {
                 />
               </Form.Group>
 
-              <Form.Group controlId="formBasicEmail" className={"m-3"}>
+              <Form.Group controlId="userFormEmail" className={"m-3"}>
                 <Form.Label>Email : </Form.Label>
                 <Form.Label> {this.state.user.email}</Form.Label>
               </Form.Group>

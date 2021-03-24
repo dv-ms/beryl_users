@@ -33,12 +33,13 @@ export default class EditUser extends Component {
         (response) => {
           if (response.data != null) {
             let temp_user = response.data;
+            // API doesnot provide job, but asks for job field in Update API
             temp_user["job"] = "Manager";
             this.setState({
               loaded: true,
               error: null,
               user: temp_user,
-              user_avatar_preview: response.data.avatar,
+              user_avatar_preview: temp_user.avatar,
             });
           } else {
             this.setState({
@@ -55,9 +56,7 @@ export default class EditUser extends Component {
         (error) => {
           this.setState({
             loaded: true,
-            error: {
-              message: error.message,
-            },
+            error,
           });
         }
       );
@@ -97,42 +96,7 @@ export default class EditUser extends Component {
           loaded: false,
         },
         () => {
-          let user_update_url = `${process.env.REACT_APP_USERS_LIST_URL}/${this.props.match.params.userID}`;
-          fetch(user_update_url, {
-            method: "PUT",
-            body: {
-              // using just names and job here because API only accepts name and job
-              name:
-                this.state.user.first_name + " " + this.state.user.last_name,
-              job: this.state.user.job,
-            },
-          })
-            .then((response) => response.json())
-            .then(
-              (success) => {
-                if (success.updatedAt != null) {
-                  // user is updated at back-end
-                  this.setState({
-                    loaded: true,
-                    error: null,
-                    user_updated: true,
-                  });
-                } else {
-                  this.setState({
-                    loaded: true,
-                    error: {
-                      message: "Error updating user: " + success.message,
-                    },
-                  });
-                }
-              },
-              (error) => {
-                this.setState({
-                  loaded: true,
-                  error: { message: error.message },
-                });
-              }
-            );
+          this.updateUserAPI();
         }
       );
     } else {
@@ -140,15 +104,57 @@ export default class EditUser extends Component {
       window.scrollTo(0, 0);
     }
   }
+
+  updateUserAPI = () => {
+    let user_update_url = `${process.env.REACT_APP_USERS_LIST_URL}/${this.props.match.params.userID}`;
+    fetch(user_update_url, {
+      method: "PUT",
+      body: {
+        // using just names and job here because API only accepts name and job
+        name: this.state.user.first_name + " " + this.state.user.last_name,
+        job: this.state.user.job,
+      },
+    })
+      .then((response) => response.json())
+      .then(
+        (success) => {
+          if (success.updatedAt != null) {
+            // user is updated at back-end
+            alert("User updated");
+            this.setState({
+              loaded: true,
+              error: null,
+              user_updated: true,
+            });
+          } else {
+            this.setState({
+              loaded: true,
+              error: {
+                message: "Error updating user: " + success.message,
+              },
+            });
+          }
+        },
+        (error) => {
+          this.setState({
+            loaded: true,
+            error,
+          });
+        }
+      );
+  };
   render() {
     return (
       <>
+        {/* Redirect if user updated */}
         {this.state.user_updated ? (
           <Redirect to={`${process.env.REACT_APP_USERS_PATH}`} />
         ) : null}
+        {/* Error alert */}
         {this.state.error ? (
           <Alert variant="danger">{this.state.error.message}</Alert>
         ) : null}
+        {/* Buttons */}
         <div className={"p-3"}>
           <Link to={`${process.env.REACT_APP_HOME_PATH}`} className={"p-2"}>
             <Button variant="primary">Home</Button>
@@ -166,7 +172,7 @@ export default class EditUser extends Component {
           }}
         >
           <Form>
-            <Form.Group controlId="formBasicFirstName" className={"m-3"}>
+            <Form.Group controlId="userFormFirstName" className={"m-3"}>
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 value={this.state.user.first_name}
@@ -177,7 +183,7 @@ export default class EditUser extends Component {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicLastName" className={"m-3"}>
+            <Form.Group controlId="userFormLastName" className={"m-3"}>
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 value={this.state.user.last_name}
@@ -188,10 +194,10 @@ export default class EditUser extends Component {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicAvatar" className={"m-3"}>
+            <Form.Group controlId="userFormAvatar" className={"m-3"}>
               <Form.File
                 required={true}
-                id="formBasicAvatar"
+                id="userFormAvatar"
                 label="Avatar"
                 onChange={(e) => {
                   this.setUser("avatar", e.target.files[0]);
@@ -209,7 +215,7 @@ export default class EditUser extends Component {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicEmail" className={"m-3"}>
+            <Form.Group controlId="userFormEmail" className={"m-3"}>
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 value={this.state.user.email}
@@ -220,7 +226,7 @@ export default class EditUser extends Component {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicJob" className={"m-3"}>
+            <Form.Group controlId="userFormJob" className={"m-3"}>
               <Form.Label>Job</Form.Label>
               <Form.Control
                 value={this.state.user.job}

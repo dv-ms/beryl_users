@@ -38,21 +38,24 @@ export default class Users extends Component {
         (error) => {
           this.setState({
             loaded: true,
-            error: { message: error.message },
+            error,
           });
         }
       );
   };
 
   deleteUser = (user_id) => {
-    this.setState(
-      {
-        loaded: false,
-      },
-      () => {
-        this.deleteUserAPI(user_id);
-      }
-    );
+    let yes = window.confirm("Are you sure you want to delete User?");
+    if (yes) {
+      this.setState(
+        {
+          loaded: false,
+        },
+        () => {
+          this.deleteUserAPI(user_id);
+        }
+      );
+    }
   };
 
   deleteUserAPI = (user_id) => {
@@ -145,10 +148,7 @@ export default class Users extends Component {
                     </Link>
                   </td>
                   <td>
-                    <span
-                      style={{ cursor: "progress" }}
-                      onClick={(e) => this.deleteUser(user.id)}
-                    >
+                    <span onClick={(e) => this.deleteUser(user.id)}>
                       Delete
                     </span>
                   </td>
