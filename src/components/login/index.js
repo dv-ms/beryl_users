@@ -8,7 +8,9 @@ class Login extends React.Component {
       loading: false,
       error: null,
       email: "eve.holt@reqres.in",
+      email_error: null,
       password: "cityslicka",
+      password_error: null,
     };
   }
   componentDidMount() {}
@@ -20,31 +22,38 @@ class Login extends React.Component {
   };
 
   validateLogin = () => {
-    switch (true) {
-      case this.state.email === "" ||
-        this.state.email === null ||
-        this.state.email === undefined ||
-        this.notValidEmail():
-        this.setState({
-          error: {
-            message: "Please enter valid email",
-          },
-        });
-        return false;
-
-      case this.state.password === "" ||
-        this.state.password === null ||
-        this.state.password === undefined:
-        this.setState({
-          error: {
-            message: "Please enter valid password",
-          },
-        });
-        return false;
-
-      default:
-        return true;
+    let all_okay = true;
+    if (
+      this.state.email === "" ||
+      this.state.email === null ||
+      this.state.email === undefined ||
+      this.notValidEmail()
+    ) {
+      this.setState({
+        email_error: "Please enter valid email",
+      });
+      all_okay = false;
     }
+
+    if (
+      this.state.password === "" ||
+      this.state.password === null ||
+      this.state.password === undefined
+    ) {
+      this.setState({
+        password_error: "Please enter valid password",
+      });
+      all_okay = false;
+    }
+
+    if (all_okay) {
+      this.setState({
+        email_error: null,
+        password_error: null,
+      });
+    }
+
+    return all_okay;
   };
 
   notValidEmail = () => {
@@ -67,8 +76,6 @@ class Login extends React.Component {
   };
 
   LoginAPI = () => {
-    console.log(this.state.email);
-    console.log(this.state.password);
     fetch(`${process.env.REACT_APP_LOGIN_URL}`, {
       method: "POST",
       body: JSON.stringify({
@@ -131,8 +138,14 @@ class Login extends React.Component {
                 required={true}
                 type="email"
                 placeholder="Please enter email"
-                onChange={(e) => this.setLogin("email", e.target.value)}
+                onChange={(e) => {
+                  this.setLogin("email", e.target.value);
+                  this.validateLogin();
+                }}
               />
+              {this.state.email_error ? (
+                <span style={{ color: "red" }}>{this.state.email_error}</span>
+              ) : null}
             </Form.Group>
 
             <Form.Group controlId="loginFormPassword" className={"m-3"}>
@@ -142,8 +155,16 @@ class Login extends React.Component {
                 required={true}
                 type="password"
                 placeholder="Please enter password"
-                onChange={(e) => this.setLogin("password", e.target.value)}
+                onChange={(e) => {
+                  this.setLogin("password", e.target.value);
+                  this.validateLogin();
+                }}
               />
+              {this.state.password_error ? (
+                <span style={{ color: "red" }}>
+                  {this.state.password_error}
+                </span>
+              ) : null}
             </Form.Group>
 
             <Button
