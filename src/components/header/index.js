@@ -5,7 +5,9 @@ export default class Header extends Component {
     super(props);
     this.state = {};
   }
-  componentDidMount() {}
+  componentDidMount() {
+    console.log("HEADER MOUNT function");
+  }
   componentDidUpdate() {}
 
   logout = () => {
@@ -15,7 +17,7 @@ export default class Header extends Component {
     window.location.href = "/";
   };
   render() {
-    console.log("Header rendered");
+    console.log("Header render");
     return (
       <div id="header">
         <Row>

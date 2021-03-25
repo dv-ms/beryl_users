@@ -79,7 +79,7 @@ class Login extends React.Component {
     fetch(`${process.env.REACT_APP_LOGIN_URL}`, {
       method: "POST",
       body: JSON.stringify({
-        username: this.state.email,
+        email: this.state.email,
         password: this.state.password,
       }),
     })
@@ -96,6 +96,8 @@ class Login extends React.Component {
             // Reload will load App.js which will find auth_token in local storage and keep same page as user request
             window.location.reload();
           } else {
+            localStorage.setItem("users_auth_token", success.token);
+            window.location.reload();
             this.setState({
               loading: false,
               error: {

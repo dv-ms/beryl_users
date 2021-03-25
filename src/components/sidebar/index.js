@@ -8,7 +8,9 @@ export default class Sidebar extends Component {
       current_page_index: 0,
     };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    console.log("Sidebar mount function");
+  }
   componentDidUpdate() {}
 
   setPage = (index) => {
@@ -18,7 +20,7 @@ export default class Sidebar extends Component {
     this.props.changePage(index);
   };
   render() {
-    console.log("Sidebar rendered");
+    console.log("Sidebar render function");
     return (
       <div id={"sidebar"}>
         {this.props.pages.map((page, index) => (

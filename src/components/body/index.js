@@ -6,7 +6,10 @@ export default class Body extends Component {
     super(props);
     this.state = {};
   }
-  componentDidMount() {}
+  componentDidMount() {
+    console.log("BODY MOUNT function");
+
+  }
   componentDidUpdate() {}
   renderBody = () => {
     switch (this.props.page) {
@@ -23,7 +26,7 @@ export default class Body extends Component {
     }
   };
   render() {
-    console.log("Body rendered");
+    console.log("Body render");
     return <div>{this.renderBody()}</div>;
   }
   componentWillUnmount() {}
