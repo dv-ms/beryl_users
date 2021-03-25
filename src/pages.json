@@ -1,0 +1,12 @@
+{
+  "pages_list": [
+    {
+      "name": "Users",
+      "code": "users"
+    },
+    {
+      "name": "Profile",
+      "code": "profile"
+    }
+  ]
+}
