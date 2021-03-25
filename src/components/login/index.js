@@ -89,21 +89,12 @@ class Login extends React.Component {
             // Reload will load App.js which will find auth_token in local storage and keep same page as user request
             window.location.reload();
           } else {
-            alert("Login successfull");
-            localStorage.setItem("users_auth_token", success.token);
             this.setState({
               loading: false,
-              error: null,
+              error: {
+                message: success.error,
+              },
             });
-            // Reload will load App.js which will find auth_token in local storage and keep same page as user request
-            window.location.reload();
-
-            // this.setState({
-            //   loading: false,
-            //   error: {
-            //     message: success.error,
-            //   },
-            // });
           }
         },
         (error) => {
