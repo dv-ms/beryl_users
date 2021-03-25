@@ -10,6 +10,8 @@ export default class Users extends Component {
       error: null,
       users: [],
       show_user_id: null,
+      page: 1,
+      total_pages: 1,
     };
   }
   componentDidMount() {
@@ -17,12 +19,17 @@ export default class Users extends Component {
   }
 
   fetchUsers = () => {
-    fetch(`${process.env.REACT_APP_USERS_LIST_URL}`)
+    fetch(`${process.env.REACT_APP_USERS_LIST_URL}?page=${this.state.page}`)
       .then((response) => response.json())
       .then(
         (response) => {
           if (response.data != null) {
-            this.setState({ loaded: true, error: null, users: response.data });
+            this.setState({
+              loaded: true,
+              error: null,
+              users: response.data,
+              total_pages: response.total_pages,
+            });
           } else {
             this.setState({
               loaded: true,
@@ -156,6 +163,33 @@ export default class Users extends Component {
               ))}
             </tbody>
           </Table>
+          {/* Pagination  */}
+          <span>Pages: </span>
+          {[...Array(this.state.total_pages)].map((e, i) => (
+            <span
+              style={{
+                padding: "10px",
+                cursor: "pointer",
+                margin: "10px",
+                backgroundColor:
+                  this.state.page === i + 1 ? "#a3d9f7" : "white",
+              }}
+              key={i}
+              onClick={(e) => {
+                this.setState(
+                  {
+                    page: i + 1,
+                    loaded: false,
+                  },
+                  () => {
+                    this.fetchUsers();
+                  }
+                );
+              }}
+            >
+              {i + 1}
+            </span>
+          ))}
         </>
       );
     }
