@@ -7,6 +7,7 @@ import Dashboard from "./components/dashboard";
 import NotFound from "./components/not_found";
 import { Spinner } from "react-bootstrap";
 import Login from "./components/login";
+import Upload from "./components/upload";
 
 class App extends React.Component {
   constructor(props) {
@@ -56,6 +57,10 @@ class App extends React.Component {
               <Switch>
                 <Route exact path={`${process.env.REACT_APP_HOME_PATH}`}>
                   <Dashboard />
+                </Route>
+
+                <Route exact path={`${process.env.REACT_APP_UPLOAD_PATH}`}>
+                  <Upload />
                 </Route>
                 {/* 
                 <Route exact path={`${process.env.REACT_APP_USERS_PATH}`}>

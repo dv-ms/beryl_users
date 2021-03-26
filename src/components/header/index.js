@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Col, Button, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 export default class Header extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +27,9 @@ export default class Header extends Component {
           </Col>
           <Col xs={10} />
           <Col xs={1}>
+            <Link to="/upload">
+              <Button variant="primary">Upload</Button>
+            </Link>
             <Button variant="danger" onClick={(e) => this.logout()}>
               Logout
             </Button>
