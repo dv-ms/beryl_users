@@ -25,11 +25,20 @@ export default class Header extends Component {
           <Col xs={1}>
             <h4>Assignment</h4>
           </Col>
-          <Col xs={10} />
-          <Col xs={1}>
+          <Col xs={10}>
+            <Link to="/form_multistep">
+              <Button variant="primary">MultiStep Form</Button>
+            </Link>
+
             <Link to="/upload">
               <Button variant="primary">Upload</Button>
             </Link>
+
+            <Link to="/upload2">
+              <Button variant="primary">Upload Large File</Button>
+            </Link>
+          </Col>
+          <Col xs={1}>
             <Button variant="danger" onClick={(e) => this.logout()}>
               Logout
             </Button>

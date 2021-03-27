@@ -9,6 +9,7 @@ import { Spinner } from "react-bootstrap";
 import Login from "./components/login";
 import Upload from "./components/upload";
 import Upload2 from "./components/upload2";
+import MultiStepForm from "./components/multistep_form";
 
 class App extends React.Component {
   constructor(props) {
@@ -66,6 +67,13 @@ class App extends React.Component {
 
                 <Route exact path={`${process.env.REACT_APP_UPLOAD_2_PATH}`}>
                   <Upload2 />
+                </Route>
+
+                <Route
+                  exact
+                  path={`${process.env.REACT_APP_MULTI_STEP_FORM_PATH}`}
+                >
+                  <MultiStepForm />
                 </Route>
 
                 {/* 
