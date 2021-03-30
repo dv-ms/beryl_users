@@ -1,6 +1,6 @@
 import { Button, Alert } from "react-bootstrap";
 import React, { Component } from "react";
-const steps_json = require("../../steps.json");
+
 export default class MultiStepForm extends Component {
   constructor(props) {
     super(props);
@@ -102,6 +102,9 @@ export default class MultiStepForm extends Component {
             fields={this.state.fields}
           />
         );
+
+      default:
+        return <h2>Oops not found</h2>;
     }
   };
   render() {
@@ -114,6 +117,7 @@ export default class MultiStepForm extends Component {
         {/* Steps */}
         {this.state.steps.map((step, index) => (
           <span
+            key={index}
             style={{
               padding: "20px",
               backgroundColor:
@@ -227,23 +231,15 @@ class Step1 extends Component {
 
         <label>
           Gender:
-          <select onChange={(e) => this.setValue("gender", e.target.value)}>
-            <option
-              value=""
-              selected={this.props.fields.gender === ""}
-              disabled
-            >
+          <select
+            onChange={(e) => this.setValue("gender", e.target.value)}
+            defaultValue={this.props.fields.gender}
+          >
+            <option value="" disabled>
               Please select
             </option>
-            <option value="male" selected={this.props.fields.gender === "male"}>
-              Male
-            </option>
-            <option
-              value="female"
-              selected={this.props.fields.gender === "female"}
-            >
-              Female
-            </option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
           </select>
         </label>
 
